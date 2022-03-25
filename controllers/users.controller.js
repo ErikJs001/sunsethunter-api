@@ -9,7 +9,7 @@ const axios = require('axios');
 
 
 module.exports = {
-
+	
 
     // Add a new site to the user's list of sites
     addSite: async ( req, res = response ) => {
@@ -52,6 +52,54 @@ module.exports = {
 		
 
     },
+
+	//Remove a site from the list
+	removeSite: async (req, res = response) => {
+
+		
+		const { id, name, email } = req.body;
+		let user = await UserSchema.findOne({ id });
+
+		let sites = req.body.sites;
+		let oldsites = user.sites;
+
+		sites = oldsites.filter(elem => !sites.includes(elem)); // filter the site to be removed
+
+		user.sites = sites; //replace the old array with a new one and save
+		await user.save()
+			.then(
+				res.status(200).send("List updated")
+			)
+			.catch(
+				err => handleError(err)
+			);
+
+
+	},
+	updateSite: async (req, res = response) => {
+
+
+		// const { id, name, email } = req.body;
+		// let user = await UserSchema.findOne({ id });
+
+		// // We check that the cities we receive are not already had by the user
+		// let site_update = req.body.sites;
+		// let oldsites = user.sites;
+
+		// sites = oldsites.filter(elem => !sites.includes(elem));
+
+		// // We save sites
+		// user.sites = sites;
+		// await user.save()
+		// 	.then(
+		// 		res.status(200).send("List updated")
+		// 	)
+		// 	.catch(
+		// 		err => handleError(err)
+		// 	);
+
+
+	},
 
 	getSites: async ( req, res = response ) => {
 
@@ -214,4 +262,4 @@ module.exports = {
 
 
 
-}
+}3
