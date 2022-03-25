@@ -8,7 +8,7 @@ class Server {
 
         this.app = express();
         this.port = process.env.PORT;
-        this.usuariosPath = '/api/usuarios'
+        this.usuariosPath = '/api/users'
 
         // Middlewares - Son funciones que añaden más cosas al server
         this.middlewares();
@@ -24,6 +24,9 @@ class Server {
 
         // Lectura y parseo del body - Toda la información la serializamos a .json
         this.app.use( express.json() );
+
+        // Autentificación con Google
+        this.app.use( require('../models/auth'));
         
         // "Use" se utiliza para los middlewares
         // Directorio público
@@ -32,7 +35,7 @@ class Server {
 
     routes() {
         
-        this.app.use( this.usuariosPath, require('../routes/usuarios.routes'));
+        this.app.use( this.usuariosPath, require('../routes/users.routes'));
     }
 
     listen() {
